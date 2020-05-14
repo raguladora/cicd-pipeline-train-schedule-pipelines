@@ -20,8 +20,8 @@ pipeline {
         sh "git config --global push.default simple"
         sh "git init"
         sh "git add ."
-        sh "git commit -m 'updated'"
-        sh "git push"
+        sh "git commit -am 'updated'"
+        sh "git push origin master"
         }
     }
 }
