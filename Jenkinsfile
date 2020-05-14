@@ -21,7 +21,8 @@ pipeline {
         sh "git init"
         sh "git add ."
         sh "git commit -am 'updated'"
-        sh "git push -u origin master"
+        sh "git status" 
+//        sh "git push -u origin master"
         }
     }
 }
