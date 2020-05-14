@@ -5,7 +5,8 @@ pipeline {
       steps {
         sh "touch {pman_version.cur,pman_version.old}"
         sh "echo ${env.BUILD_ID} > pman_version.cur"
-        sh "cat pam_version.cur"
+        sh "cat pman_version.cur"
+        sh "cat pman_version.old"
       }
     }
  }
