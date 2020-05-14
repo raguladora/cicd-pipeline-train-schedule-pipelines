@@ -17,6 +17,7 @@ pipeline {
         success { 
         sh "git add ."
         sh "git commit -m 'updated'"
+        sh "git push origin master"
         }
     }
 }
