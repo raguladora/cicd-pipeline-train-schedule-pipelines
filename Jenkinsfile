@@ -3,7 +3,7 @@ pipeline {
  stages{
    stage('git configuration') {
       steps {
-        sh "git config --global user.name 'raguladora'"
+        sh "git config --global user.name 'ragula dora'"
         sh "git config --global user.email 'dorareddy1899@gmail.com'"
         sh "git config --global push.default simple"
       }
