@@ -10,9 +10,14 @@ pipeline {
         sh "echo ${env.BUILD_ID} > pman_version.cur"
         sh "cat pman_version.cur"
         archiveArtifacts artifacts: '*_version.*'
-        sh "git add ."
-        sh "git commit -m "updated"
       }
     }
+    post { 
+        success { 
+            echo 'I will always say Hello again!'
+        }
+    }
+//        sh "git add ."
+//        sh "git commit -m 'updated'"
  }
 }
