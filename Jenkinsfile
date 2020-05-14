@@ -10,7 +10,7 @@ pipeline {
         sh "echo ${env.BUILD_ID} > pman_version.cur"
         sh "cat pman_version.cur"
         archiveArtifacts artifacts: '*_version.*'
-        sh "git checkout -B master"
+        sh "ls"
       }
     }
  }
