@@ -10,7 +10,8 @@ pipeline {
         sh "echo ${env.BUILD_ID} > pman_version.cur"
         sh "cat pman_version.cur"
         archiveArtifacts artifacts: '*_version.*'
-        sh "ls"
+        sh "git add ."
+        sh "git commit -m "updated"
       }
     }
  }
