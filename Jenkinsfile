@@ -12,6 +12,7 @@ pipeline {
         archiveArtifacts artifacts: '*_version.*'
       }
     }
+ }
     post { 
         success { 
             echo 'I will always say Hello again!'
@@ -19,5 +20,4 @@ pipeline {
     }
 //        sh "git add ."
 //        sh "git commit -m 'updated'"
- }
 }
