@@ -15,9 +15,8 @@ pipeline {
  }
     post { 
         success { 
-            echo 'I will always say Hello again!'
+        sh "git add ."
+        sh "git commit -m 'updated'"
         }
     }
-//        sh "git add ."
-//        sh "git commit -m 'updated'"
 }
