@@ -18,7 +18,6 @@ pipeline {
         sh "git init"
         sh "git add ."
         sh "git commit -m 'updated'"
-        sh "git remote add origin https://github.com/raguladora/cicd-pipeline-train-schedule-pipelines.git"
         sh "git push -u origin master"
         sh "git push"
         }
