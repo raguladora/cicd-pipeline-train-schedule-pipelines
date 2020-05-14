@@ -17,6 +17,7 @@ pipeline {
         success {
         sh "git config --global user.name 'raguladora'"
         sh "git config --global user.email 'dorareddy1899@gmail.com'"
+        sh "git config --global push.default simple"
         sh "git init"
         sh "git add ."
         sh "git commit -m 'updated'"
