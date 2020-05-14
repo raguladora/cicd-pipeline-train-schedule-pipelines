@@ -14,7 +14,9 @@ pipeline {
     }
  }
     post { 
-        success { 
+        success {
+        sh "git config --global user.name 'raguladora'"
+        sh "git config --global user.email 'dorareddy1899@gmail.com'"
         sh "git init"
         sh "git add ."
         sh "git commit -m 'updated'"
