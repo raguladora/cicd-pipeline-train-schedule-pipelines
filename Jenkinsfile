@@ -22,10 +22,13 @@ pipeline {
  }
     post { 
         success {
+        sh "git status"
         sh "git init"
+        sh "git status"
         sh "git add ."
+        sh "git status"
         sh "git commit -am 'updated'"
-        sh "git status" 
+        sh "git status"
         sh "git push -u origin master"
         }
     }
