@@ -7,4 +7,5 @@ pipeline {
         sh "echo ${env.BUILD_ID} > pman_version.cur"
       }
     }
+ }
 }
