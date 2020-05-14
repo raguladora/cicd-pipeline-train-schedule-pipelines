@@ -3,7 +3,7 @@ pipeline {
  stages{
 //   stage('Create a file with build_number') {
 //      steps {
-   stage "Create build output"
+  stage "Create build output" {
      steps {
     
     // Make the output directory.
