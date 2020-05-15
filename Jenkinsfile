@@ -27,8 +27,8 @@ pipeline {
 //                        }
                         echo "reading version files"
                         sh "cd ~/${service}-versionfiles/"
-                        service_version_cur = sh(script: 'cat *_version.cur' , returnStdout: true)
-                        service_version_old = sh(script: 'cat *_version.old' , returnStdout: true)
+                        service_version_cur = sh(script: 'cat trial_version.cur' , returnStdout: true)
+                        service_version_old = sh(script: 'cat trial_version.old' , returnStdout: true)
                         echo "printing version files"
                         println(service_version_cur)
                         println(service_version_old)
