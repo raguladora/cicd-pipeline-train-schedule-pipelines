@@ -1,25 +1,36 @@
+def service = "trial"
+def authkey = "f486be3b-4af4-4514-b9eb-0f639c4aecbb"
+def s3bucket = "services-version"
+
 pipeline {
- agent any
- stages{
-   stage('Create a file with build_number') {
-      steps {
-        sh "touch {pman_version.cur,pman_version.old}"
-        sh "cat pman_version.cur"
-        sh "cp pman_version.cur pman_version.old"
-        sh "cat pman_version.old"
-        sh "echo ${env.BUILD_ID} > pman_version.cur"
-        sh "cat pman_version.cur"
-        archiveArtifacts artifacts: '*_version.*'
-      }
-    }
- }
-    post { 
-        success {
-        sh "git init"
-        sh "git add ."
-        sh "git commit -am 'service version updated'"
-        sh "git status"
-        sh "git push -u origin master"
-        }
-    }
+    agent any
+    stages {
+      stage('Create verison files and push to s3 bucket') {
+          steps {
+                script {
+                        sh "mkdir ~/${service}-versionfiles"
+                        sh "mv ~/${service}-versionfiles/${service}_version.cur ~/${service}-versionfiles/${service}_version.old"
+                        sh "echo ${env.BUILD_ID} > ~/${service}-versionfiles/${service}_version.cur"
+//                      withAWS(credentials:"$authkey") {
+                                // sh "aws s3 cp ~/${service}-versionfiles/${service}_version.cur s3://${s3bucket}/${service}/${service}_version.cur"
+                                // sh "aws s3 cp ~/${service}-versionfiles/${service}_version.old s3://${s3bucket}/${service}/${service}_version.old"
+ //                       }
+                }
+          }
+     }
+      stage('pull version files from s3 bucket and assign to a variable') {
+          steps {
+                script {
+//                      withAWS(credentials:"$authkey") {
+                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.cur"
+                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.old "
+//                        }
+                        def ${service}_version.cur = readFile(file: '~/${service}-versionfiles/${service}_version.cur')
+                        def ${service}_version.old = readFile(file: '~/${service}-versionfiles/${service}_version.old')
+                        println(${service}_version.cur)
+                        println(${service}_version.old)
+                }
+          }
+     }
+   }
 }
