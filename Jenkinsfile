@@ -25,8 +25,8 @@ pipeline {
                                 // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.cur"
                                 // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.old "
 //                        }
-                        def version.cur = readFile(file: '~/${service}-versionfiles/${service}_version.cur')
-                        def version.old = readFile(file: '~/${service}-versionfiles/${service}_version.old')
+                        version.cur = readFile(file: '~/${service}-versionfiles/${service}_version.cur')
+                        version.old = readFile(file: '~/${service}-versionfiles/${service}_version.old')
                         println(version.cur)
                         println(version.old)
                 }
