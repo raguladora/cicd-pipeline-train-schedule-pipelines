@@ -32,8 +32,8 @@ pipeline {
                         echo "printing version files"
 //                        println(service_version.cur)
 //                        println(service_version.old)
-                        println(readFile(file: '~/${service}-versionfiles/${service}_version.cur'))
-                        println(readFile(file: '~/${service}-versionfiles/${service}_version.old'))
+                        println(readFile(file: '${service}-versionfiles/${service}_version.cur'))
+                        println(readFile(file: '${service}-versionfiles/${service}_version.old'))
 
                 }
           }
