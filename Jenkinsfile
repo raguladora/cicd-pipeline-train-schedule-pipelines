@@ -27,12 +27,15 @@ pipeline {
 //                        }
                         echo "reading version files"
                         sh "ls -all ~/${service}-versionfiles/"
-                        service_version.cur = readFile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.old')
-                        service_version.old = readFile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.old')
+                        service_version_cur = sh(script: 'cat /var/lib/jenkins/trial-versionfiles/trial_version.cur' , returnStdout: true)
+                        service_version_old = sh(script: 'cat /var/lib/jenkins/trial-versionfiles/trial_version.old' , returnStdout: true)
+                        service_version_cur1 = readfile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.cur')
+                        service_version_old1 = readfile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.old')
                         echo "printing version files"
-                        println(service_version.cur)
-                        println(service_version.old)
-
+                        println(service_version_cur)
+                        println(service_version_old)
+                        println(service_version_cur1)
+                        println(service_version_old1)
                 }
           }
      }
