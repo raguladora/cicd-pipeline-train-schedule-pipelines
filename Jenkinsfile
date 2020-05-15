@@ -29,8 +29,8 @@ pipeline {
                         sh "ls -all ~/${service}-versionfiles/"
                         service_version_cur = sh(script: 'cat /var/lib/jenkins/trial-versionfiles/trial_version.cur' , returnStdout: true)
                         service_version_old = sh(script: 'cat /var/lib/jenkins/trial-versionfiles/trial_version.old' , returnStdout: true)
-                        service_version_cur1 = readfile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.cur')
-                        service_version_old1 = readfile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.old')
+                        service_version_cur1 = readFile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.cur')
+                        service_version_old1 = readFile(file: '/var/lib/jenkins/trial-versionfiles/trial_version.old')
                         echo "printing version files"
                         println(service_version_cur)
                         println(service_version_old)
