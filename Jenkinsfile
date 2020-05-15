@@ -27,11 +27,6 @@ pipeline {
                                 // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.old "
 //                        }
                         echo "reading version files"
-                        sh "cd ~/versionfiles/${service}-versionfiles/"
-                        sh "ls -all ~/versionfiles/${service}-versionfiles/"
-                        sh "pwd"
-//                        service_version_cur = sh "cat ~/versionfiles/${service}-versionfiles/*_version.cur"
-//                        service_version_old = sh "cat ~/versionfiles/${service}-versionfiles/*_version.cur"
                         service_version_cur = sh(script: "cat ~/versionfiles/${service}-versionfiles/*_version.cur" , returnStdout: true)
                         service_version_old = sh(script: "cat ~/versionfiles/${service}-versionfiles/*_version.old" , returnStdout: true)
                         echo "printing version files"
