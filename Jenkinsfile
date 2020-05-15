@@ -9,6 +9,7 @@ pipeline {
           steps {
                 script {
                         sh "mkdir ~/${service}-versionfiles"
+                        sh "touch ~/${service}-versionfiles/${service}_version.cur ~/${service}-versionfiles/${service}_version.old"
                         sh "mv ~/${service}-versionfiles/${service}_version.cur ~/${service}-versionfiles/${service}_version.old"
                         sh "echo ${env.BUILD_ID} > ~/${service}-versionfiles/${service}_version.cur"
 //                      withAWS(credentials:"$authkey") {
@@ -25,10 +26,12 @@ pipeline {
                                 // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.cur"
                                 // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.old "
 //                        }
-                        version.cur = readFile(file: '~/${service}-versionfiles/${service}_version.cur')
-                        version.old = readFile(file: '~/${service}-versionfiles/${service}_version.old')
-                        println(version.cur)
-                        println(version.old)
+                        echo "pulling version files"
+                        ${service}-version.cur = readFile(file: '~/${service}-versionfiles/${service}_version.cur')
+                        ${service}-version.old = readFile(file: '~/${service}-versionfiles/${service}_version.old')
+                        echo "printing version files"
+                        println(${service}-version.cur)
+                        println(${service}-version.old)
                 }
           }
      }
