@@ -30,8 +30,10 @@ pipeline {
                         sh "cd ~/versionfiles/${service}-versionfiles/"
                         sh "ls -all ~/versionfiles/${service}-versionfiles/"
                         sh "pwd"
-                        service_version_cur = sh(script: 'cat *_version.cur' , returnStdout: true)
-                        service_version_old = sh(script: 'cat *_version.old' , returnStdout: true)
+                        service_version_cur = sh "cat ~/versionfiles/${service}-versionfiles/*_version.cur"
+                        service_version_old = sh "cat ~/versionfiles/${service}-versionfiles/*_version.cur"
+//                        service_version_cur = sh(script: 'cat *_version.cur' , returnStdout: true)
+//                        service_version_old = sh(script: 'cat *_version.old' , returnStdout: true)
                         echo "printing version files"
                         println(service_version_cur)
                         println(service_version_old)
