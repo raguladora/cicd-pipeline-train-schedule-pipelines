@@ -35,5 +35,20 @@ pipeline {
                 }
           }
      }
+      stage('deployment') {
+          steps {
+                script {
+                    echo "deployment succedded"
+                }
+          }
+     }
    }
+    post {
+    success {
+         echo "${currentBuild.currentResult}"
+        }
+    failure {
+         echo "${currentBuild.currentResult}"
+        }
+     }
 }
