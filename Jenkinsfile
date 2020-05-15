@@ -8,7 +8,6 @@ pipeline {
       stage('Create verison files and push to s3 bucket') {
           steps {
                 script {
-                        sh "mkdir ~/${service}-versionfiles"
                         sh "touch ~/${service}-versionfiles/${service}_version.cur ~/${service}-versionfiles/${service}_version.old"
                         sh "mv ~/${service}-versionfiles/${service}_version.cur ~/${service}-versionfiles/${service}_version.old"
                         sh "echo ${env.BUILD_ID} > ~/${service}-versionfiles/${service}_version.cur"
