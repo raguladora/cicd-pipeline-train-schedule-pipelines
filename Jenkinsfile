@@ -45,10 +45,10 @@ pipeline {
    }
     post {
     success {
-         echo "${currentBuild.currentResult}"
+        echo "${service} with ${service_version_cur} version deployed successfully"
         }
     failure {
-         echo "${currentBuild.currentResult}"
+         echo "${service} with ${service_version_cur} version deployed failed so rolling back to ${service_version_old}"
         }
      }
 }
