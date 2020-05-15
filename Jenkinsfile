@@ -8,12 +8,13 @@ pipeline {
       stage('Create verison files and push to s3 bucket') {
           steps {
                 script {
-                        sh "touch ~/${service}-versionfiles/${service}_version.cur ~/${service}-versionfiles/${service}_version.old"
-                        sh "mv ~/${service}-versionfiles/${service}_version.cur ~/${service}-versionfiles/${service}_version.old"
-                        sh "echo ${env.BUILD_ID} > ~/${service}-versionfiles/${service}_version.cur"
+                        sh "mkdir ~/versionfiles/"
+                        sh "touch ~/versionfiles/${service}-versionfiles/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.old"
+                        sh "mv ~/versionfiles/${service}-versionfiles/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.old"
+                        sh "echo ${env.BUILD_ID} > ~/versionfiles/${service}-versionfiles/${service}_version.cur"
 //                      withAWS(credentials:"$authkey") {
-                                // sh "aws s3 cp ~/${service}-versionfiles/${service}_version.cur s3://${s3bucket}/${service}/${service}_version.cur"
-                                // sh "aws s3 cp ~/${service}-versionfiles/${service}_version.old s3://${s3bucket}/${service}/${service}_version.old"
+                                // sh "aws s3 cp ~/versionfiles/${service}-versionfiles/${service}_version.cur s3://${s3bucket}/${service}/${service}_version.cur"
+                                // sh "aws s3 cp ~/versionfiles/${service}-versionfiles/${service}_version.old s3://${s3bucket}/${service}/${service}_version.old"
  //                       }
                 }
           }
@@ -22,13 +23,15 @@ pipeline {
           steps {
                 script {
 //                      withAWS(credentials:"$authkey") {
-                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.cur"
-                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/${service}-versionfiles/${service}_version.old "
+                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.cur"
+                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.old "
 //                        }
                         echo "reading version files"
-                        sh "cd ~/${service}-versionfiles/"
-                        service_version_cur = sh(script: 'cat trial_version.cur' , returnStdout: true)
-                        service_version_old = sh(script: 'cat trial_version.old' , returnStdout: true)
+                        sh "cd ~/versionfiles/${service}-versionfiles/"
+                        sh "ls -all ~/versionfiles/${service}-versionfiles/"
+                        sh "pwd"
+                        service_version_cur = sh(script: 'cat *_version.cur' , returnStdout: true)
+                        service_version_old = sh(script: 'cat *_version.old' , returnStdout: true)
                         echo "printing version files"
                         println(service_version_cur)
                         println(service_version_old)
