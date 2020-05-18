@@ -37,13 +37,19 @@ pipeline {
           }
      }
       stage('deployment') {
-        input {
-          message  "Do you approve deployment?"
-        }
           steps {
                 script {
                     echo "deployment succedded"
                 }
+          }
+     }
+   }
+      stage('deployment') {
+        input {
+          message  "deployemented successfull completed do you want to redeploy the version again"
+        }
+          steps {
+             build job: 'trial'
           }
      }
    }
