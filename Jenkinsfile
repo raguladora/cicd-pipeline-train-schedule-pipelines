@@ -43,8 +43,7 @@ pipeline {
                 }
           }
      }
-   }
-      stage('deployment') {
+      stage('re-deployment') {
         input {
           message  "deployemented successfull completed do you want to redeploy the version again"
         }
