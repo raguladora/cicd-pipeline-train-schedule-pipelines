@@ -49,9 +49,7 @@ pipeline {
         echo "${service} with ${service_version_cur} version deployed successfully"
         }
     failure {
-          steps {
              build job: '../trial/master'
-          }
      }
    }
 }
