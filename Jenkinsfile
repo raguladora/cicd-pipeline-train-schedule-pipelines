@@ -43,6 +43,7 @@ pipeline {
                 }
           }
      }
+  }
     post {
     success {
         echo "${service} with ${service_version_cur} version deployed successfully"
@@ -55,5 +56,5 @@ pipeline {
              build job: '../trial/master'
           }
      }
-    }
+   }
 }
