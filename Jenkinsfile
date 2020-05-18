@@ -39,11 +39,15 @@ pipeline {
       stage('deployment') {
           steps {
                 script {
-                    echo "deployment succedded"
+                    echo deployment succedded
                 }
           }
      }
-      stage('re-deployment') {
+    post {
+    success {
+        echo "${service} with ${service_version_cur} version deployed successfully"
+        }
+    failure {
         input {
           message  "Press OK for redeploying the version"
         }
@@ -51,13 +55,6 @@ pipeline {
              build job: '../trial/master'
           }
      }
-   }
-    post {
-    success {
-        echo "${service} with ${service_version_cur} version deployed successfully"
-        }
-    failure {
-         echo "${service} with ${service_version_cur} version deployed failed so rolling back to ${service_version_old}"
-        }
+    }
      }
 }
