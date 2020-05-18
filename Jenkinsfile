@@ -48,7 +48,7 @@ pipeline {
           message  "deployemented successfull completed do you want to redeploy the version again"
         }
           steps {
-             build job: 'trial'
+             build job: '../trial/master'
           }
      }
    }
