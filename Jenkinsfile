@@ -39,7 +39,7 @@ pipeline {
       stage('deployment') {
           steps {
                 script {
-                    echo deployment succedded
+                    echo "deployment succedded"
                 }
           }
      }
