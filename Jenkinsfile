@@ -37,6 +37,7 @@ pipeline {
           }
      }
       stage('deployment') {
+          input 'Do you approve deployment?'
           steps {
                 script {
                     echo "deployment succedded"
