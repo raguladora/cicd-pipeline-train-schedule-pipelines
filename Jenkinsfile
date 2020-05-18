@@ -45,7 +45,7 @@ pipeline {
      }
       stage('re-deployment') {
         input {
-          message  "deployemented successfull completed do you want to redeploy the version again"
+          message  "Press OK for redeploying the version"
         }
           steps {
              build job: '../trial/master'
