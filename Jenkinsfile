@@ -49,9 +49,6 @@ pipeline {
         echo "${service} with ${service_version_cur} version deployed successfully"
         }
     failure {
-        input {
-          message  "Press OK for redeploying the version"
-        }
           steps {
              build job: '../trial/master'
           }
