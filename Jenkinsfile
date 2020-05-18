@@ -39,13 +39,13 @@ pipeline {
       stage('deployment') {
         input {
           message  "Do you approve deployment?"
+        }
           steps {
                 script {
                     echo "deployment succedded"
                 }
           }
      }
-    }
    }
     post {
     success {
