@@ -9,7 +9,7 @@ pipeline {
      stage('Docker push'){
          steps{
              script{
-                 docker.withRegistry('https://280064746148.dkr.ecr.eu-west-1.amazonaws.com', 'ecr:eu-west-1:${authkey}') {
+                 docker.withRegistry('https://280064746148.dkr.ecr.eu-west-1.amazonaws.com', 'ecr:eu-west-1:$authkey') {
                  echo "connection established"
              }
            }
