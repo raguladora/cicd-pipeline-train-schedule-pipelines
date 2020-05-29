@@ -5,7 +5,12 @@ def service_version_cur
 def service_version_old
 pipeline {
     agent any
-    stages {
+    stage 'Docker push'{
+    docker.withRegistry('https://280064746148.dkr.ecr.eu-west-1.amazonaws.com', 'ecr:eu-west-1:${authkey}') {
+    docker.image('demo').push('latest')
+  }
+}    
+/*    stages {
       stage('Create verison files and push to s3 bucket') {
           steps {
                 script {
@@ -53,3 +58,4 @@ pipeline {
      }
    }
 }
+*/
