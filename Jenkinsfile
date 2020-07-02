@@ -23,27 +23,6 @@ pipeline {
         input  "Do you want to proceed for deployment?"
       }
     }
-    stage('Prepare environment configuration') {
-      steps {
-        script {
-
-          if( params.BRANCH_NAME == 'prod' || params.BRANCH_NAME == 'uat' || params.BRANCH_NAME == 'seuat' || params.BRANCH_NAME == 'uatuk' || params.BRANCH_NAME == 'PRODTEMPLATE' ) {
-            authkey = "085a26c5-6009-4dc2-ab6d-b1aae52ffb5a"
-          }
-          else {
-            authkey = "f486be3b-4af4-4514-b9eb-0f639c4aecbb"
-          }
-
-          servicepath = "${params.BUILD_PATH}/${SERVICE}"
-        }
-        sh "mkdir -p ${params.BRANCH_NAME}/${servicepath}"
-        sh "cp -av ${servicepath}/* ${BRANCH_NAME}/${servicepath}/"
-        sh "cp -av common ${params.BRANCH_NAME}/"
-        dir("${params.BRANCH_NAME}/${servicepath}") {
-          sh "${WORKSPACE}/common/scripts/envconfig.sh ${params.BRANCH_NAME}"
-        }
-      }
-    }
     stage('setting database credentials') {
       steps {
         script {
