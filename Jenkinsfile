@@ -58,7 +58,7 @@ pipeline {
         sh "mkdir -p ${params.SERVICE}/${dbname}"
         dir("${params.SERVICE}/${dbname}"){
           sh "export PGPASSWORD=${password}"
-          sh "pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"
+          sh "pg_dump -h ${host} -p ${port} -U ${username} > ${dbname}-${BUILD_TIMESTAMP}.sql"
           sh "cat ${dbname}-${BUILD_TIMESTAMP}.sql"
         }
         sh "ls -all ${params.SERVICE}/${dbname}"
