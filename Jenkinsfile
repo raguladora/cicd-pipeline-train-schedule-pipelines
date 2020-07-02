@@ -58,17 +58,7 @@ pipeline {
         sh "mkdir -p ${params.SERVICE}/${dbname}"
         dir("${params.SERVICE}/${dbname}"){
         dir("${params.SERVICE}/${dbname}"){
-          if( params.SERVICE == 'postcode' ) {
-            sh "echo ${params.SERVICE}"
-//          sh "echo mysqldump -h ${host} -P ${port} -u ${username} -d ${dbname} -p${password} ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"
-          }
-          else {
-            sh "echo ${params.SERVICE}"
-//          sh "echo export PGPASSWORD=${password}"
-//          sh "echo pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"
-          }
-          sh "cat ${dbname}-${BUILD_TIMESTAMP}.sql"
-            sh "telnet pmandevops-db.djaplatform.com 5432"
+         sh "if [ '${params.SERVICE}' = 'postcode' ]; then sh "echo mysqldump -h ${host} -P ${port} -u ${username} -d ${dbname} -p${password} ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql";  else sh "echo export PGPASSWORD=${password} && echo pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"; fi"
         }
           sh "cat ${dbname}-${BUILD_TIMESTAMP}.sql"
         }
@@ -77,3 +67,14 @@ pipeline {
     }
   }
 }
+//          if(  == 'postcode' ) {
+//            sh "echo ${params.SERVICE}"
+//          sh "echo mysqldump -h ${host} -P ${port} -u ${username} -d ${dbname} -p${password} ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"
+//          }
+//          else {
+//            sh "echo ${params.SERVICE}"
+//          sh "echo export PGPASSWORD=${password}"
+//          sh "echo pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"
+//          }
+//          sh "cat ${dbname}-${BUILD_TIMESTAMP}.sql"
+//            sh "telnet pmandevops-db.djaplatform.com 5432"
