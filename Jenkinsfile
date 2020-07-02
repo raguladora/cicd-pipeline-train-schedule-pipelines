@@ -57,7 +57,7 @@ pipeline {
       steps {
         sh "mkdir -p ${params.SERVICE}/${dbname}"
         dir("${params.SERVICE}/${dbname}"){
-         sh "if [ '${params.SERVICE}' = 'postcode' ]; then sh "echo mysqldump -h ${host} -P ${port} -u ${username} -d ${dbname} -p${password} ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql";  else sh "echo export PGPASSWORD=${password} && echo pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"; fi"
+         sh "if [ '${params.SERVICE}' = 'postcode' ]; then  mysqldump -h ${host} -P ${port} -u ${username} -d ${dbname} -p${password} ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql;  else export PGPASSWORD=${password} && pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql; fi"
         }
         sh "ls -all ${params.SERVICE}/${dbname}"
       }
