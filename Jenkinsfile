@@ -1,70 +1,89 @@
-def service = "trial"
-def authkey = "f486be3b-4af4-4514-b9eb-0f639c4aecbb"
-def s3bucket = "services-version"
-def service_version_cur
-def service_version_old
+def authkey
+def servicepath
+def host
+def port
+def username = "djadmin"
+def password
+def dbname
+
+
 pipeline {
-    agent any
-    stages{
-     stage('Docker push'){
-         steps{
-             script{
-                 sh 'rm  ~/.dockercfg || true'
-                 sh 'rm ~/.docker/config.json || true'
-                 docker.withRegistry("https://280064746148.dkr.ecr.eu-west-1.amazonaws.com", "ecr:eu-west-1:${authkey}") {
-                 echo "connection established"
-             }
-           }
+  agent any
+
+  parameters {
+    string(name: 'BUILD_PATH', defaultValue: 'prod-ecs-pub-pri/databases/', description: 'path from which terraform deployment needs to be run')
+    string(name: 'BRANCH_NAME', defaultValue: "", description: "value should be either of dev','uat','seuat','uatuk','prod','devops','demotest16','TEMPLATE'")
+    choice(name: 'SERVICE', choices: ['pman','postcode','sso','wlog'], description: 'Choose service')
+}
+
+  stages {
+
+    stage('Deploy To Environment'){
+      steps {
+        input  "Do you want to proceed for deployment?"
+      }
+    }
+    stage('Prepare environment configuration') {
+      steps {
+        script {
+
+          if( params.BRANCH_NAME == 'prod' || params.BRANCH_NAME == 'uat' || params.BRANCH_NAME == 'seuat' || params.BRANCH_NAME == 'uatuk' || params.BRANCH_NAME == 'PRODTEMPLATE' ) {
+            authkey = "085a26c5-6009-4dc2-ab6d-b1aae52ffb5a"
+          }
+          else {
+            authkey = "f486be3b-4af4-4514-b9eb-0f639c4aecbb"
+          }
+
+          servicepath = "${params.BUILD_PATH}/${SERVICE}"
         }
+        sh "mkdir -p ${params.BRANCH_NAME}/${servicepath}"
+        sh "cp -av ${servicepath}/* ${BRANCH_NAME}/${servicepath}/"
+        sh "cp -av common ${params.BRANCH_NAME}/"
+        dir("${params.BRANCH_NAME}/${servicepath}") {
+          sh "${WORKSPACE}/common/scripts/envconfig.sh ${params.BRANCH_NAME}"
+        }
+      }
+    }
+    stage('setting database credentials') {
+      steps {
+        script {
+          if( params.SERVICE == 'postcode' ) {
+            host = "postcode-devops.c8irfgmotewk.eu-west-1.rds.amazonaws.com"
+            port = "3306"
+          }
+          else {
+            host = "${params.SERVICE}${params.BRANCH_NAME}-db.djaplatform.com"
+            port = "5432"
+          }
+        }
+        script {
+          if( params.SERVICE == 'pman' ) {
+            dbname = "pmanager${params.BRANCH_NAME}"
+          }
+          else {
+            dbname = "${params.SERVICE}${params.BRANCH_NAME}"
+          }
+        }
+        script {
+          if ( params.BRANCH_NAME == 'uatuk' ) {
+            password = "55y3KVmu816V"
+          }
+          else {
+            password = "vEhW9X1vxB"
+         }
+       }
+     }
+    }
+    stage('dumping database') {
+      steps {
+        sh "mkdir -p ${params.SERVICE}/${dbname}"
+        dir("${params.SERVICE}/${dbname}"){
+          sh "export PGPASSWORD=${password}"
+          sh "pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql"
+          sh "cat ${dbname}-${BUILD_TIMESTAMP}.sql"
+        }
+        sh "ls -all ${params.SERVICE}/${dbname}"
+      }
     }
   }
 }
-/*    stages {
-      stage('Create verison files and push to s3 bucket') {
-          steps {
-                script {
-                        sh "mkdir -p ~/versionfiles/${service}-versionfiles"
-                        sh "touch ~/versionfiles/${service}-versionfiles/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.old"
-                        sh "mv ~/versionfiles/${service}-versionfiles/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.old"
-                        sh "echo ${env.BUILD_ID} > ~/versionfiles/${service}-versionfiles/${service}_version.cur"
-//                      withAWS(credentials:"$authkey") {
-                                // sh "aws s3 cp ~/versionfiles/${service}-versionfiles/${service}_version.cur s3://${s3bucket}/${service}/${service}_version.cur"
-                                // sh "aws s3 cp ~/versionfiles/${service}-versionfiles/${service}_version.old s3://${s3bucket}/${service}/${service}_version.old"
- //                       }
-                }
-          }
-     }
-      stage('pull version files from s3 bucket and assign to a variable') {
-          steps {
-                script {
-//                      withAWS(credentials:"$authkey") {
-                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.cur"
-                                // sh "aws s3 cp s3://${s3bucket}/${service}/${service}_version.cur ~/versionfiles/${service}-versionfiles/${service}_version.old "
-//                        }
-                        echo "reading version files"
-                        service_version_cur = sh(script: "cat ~/versionfiles/${service}-versionfiles/*_version.cur" , returnStdout: true).trim()
-                        service_version_old = sh(script: "cat ~/versionfiles/${service}-versionfiles/*_version.old" , returnStdout: true).trim()
-                        echo "printing version files"
-                        println(service_version_cur)
-                        println(service_version_old)
-                }
-          }
-     }
-      stage('deployment') {
-          steps {
-                script {
-                    echo "deployment succedded"
-                }
-          }
-     }
-  }
-    post {
-    success {
-        echo "${service} with ${service_version_cur} version deployed successfully"
-        }
-    failure {
-             build job: '../trial/master'
-     }
-   }
-}
-*/
