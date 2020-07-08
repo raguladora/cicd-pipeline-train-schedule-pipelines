@@ -1,5 +1,4 @@
 def authkey
-def servicepath
 def host
 def port
 def username = "djadmin"
@@ -26,14 +25,21 @@ pipeline {
     stage('setting database credentials') {
       steps {
         script {
-          if( params.SERVICE == 'postcode' ) {
-            host = "postcode-devops.c8irfgmotewk.eu-west-1.rds.amazonaws.com"
+           if( params.SERVICE == 'postcode' ) {
             port = "3306"
+           }
+           else {
+            port = "5432"
+           }
           }
-          else {
+        script {
+          if( params.BRANCH_NAME == 'seuat' || params.BRANCH_NAME == 'uatuk' || params.BRANCH_NAME == 'prod-template'){
+            host = "${params.SERVICE}${params.BRANCH_NAME}-db.apropostest.net"
+           }
+           else {
             host = "${params.SERVICE}${params.BRANCH_NAME}-db.djaplatform.com"
             port = "5432"
-          }
+           }
         }
         script {
           if( params.SERVICE == 'pman' ) {
@@ -55,11 +61,15 @@ pipeline {
     }
     stage('dumping database') {
       steps {
-        sh "mkdir -p ${params.SERVICE}/${dbname}"
-        dir("${params.SERVICE}/${dbname}"){
-         sh "if [ '${params.SERVICE}' = 'postcode' ]; then  mysqldump -h ${host} -P ${port} -u ${username} -d ${dbname} -p${password} ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql;  else export PGPASSWORD=${password} && pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql; fi"
-        }
-        sh "ls -all ${params.SERVICE}/${dbname}"
+        sh "echo ${host}"
+        sh "echo ${port}"
+        sh "echo ${password}"
+        sh "echo ${dbname}"
+//        sh "mkdir -p ${params.SERVICE}/${dbname}"
+//        dir("${params.SERVICE}/${dbname}"){
+//         sh "if [ '${params.SERVICE}' = 'postcode' ]; then  mysqldump -h ${host} -P ${port} -u ${username} -d ${dbname} -p${password} ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql;  else export PGPASSWORD=${password} && pg_dump -h ${host} -p ${port} -U ${username} -d ${dbname} > ${dbname}-${BUILD_TIMESTAMP}.sql; fi"
+//        }
+//        sh "ls -all ${params.SERVICE}/${dbname}"
       }
     }
   }
